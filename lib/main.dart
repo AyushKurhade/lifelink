@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:get/get.dart';
 import 'firebase_options.dart';
+import 'screens/dashboard_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,11 +21,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFFE24B4A)),
         useMaterial3: true,
       ),
-      home: const Scaffold(
-        body: Center(
-          child: Text('LifeLink is connected!'),
-        ),
-      ),
+      home: const DashboardScreen(),
     );
   }
 }
