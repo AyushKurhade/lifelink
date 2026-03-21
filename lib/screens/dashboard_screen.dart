@@ -7,6 +7,7 @@ import 'map_screen.dart';
 import 'hospital_screen.dart';
 import 'ambulance_screen.dart';
 import 'feed_screen.dart';
+import 'login_screen.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
@@ -56,6 +57,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
     );
   }
 
+  void logout() async {
+    await FirebaseAuth.instance.signOut();
+    Get.offAll(() => const LoginScreen());
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -80,22 +86,31 @@ class _DashboardScreenState extends State<DashboardScreen> {
                               fontSize: 14, color: Colors.grey)),
                     ],
                   ),
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 12, vertical: 6),
-                    decoration: BoxDecoration(
-                      color: isAvailable
-                          ? Colors.green.shade100
-                          : Colors.grey.shade200,
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Text(
-                      isAvailable ? 'Available' : 'Unavailable',
-                      style: TextStyle(
-                        color: isAvailable ? Colors.green : Colors.grey,
-                        fontWeight: FontWeight.w600,
+                  Row(
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 12, vertical: 6),
+                        decoration: BoxDecoration(
+                          color: isAvailable
+                              ? Colors.green.shade100
+                              : Colors.grey.shade200,
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: Text(
+                          isAvailable ? 'Available' : 'Unavailable',
+                          style: TextStyle(
+                            color: isAvailable ? Colors.green : Colors.grey,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
                       ),
-                    ),
+                      const SizedBox(width: 8),
+                      IconButton(
+                        icon: const Icon(Icons.logout, color: Colors.grey),
+                        onPressed: logout,
+                      ),
+                    ],
                   ),
                 ],
               ),
