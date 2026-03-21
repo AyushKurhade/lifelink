@@ -51,7 +51,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         .update({'available': isAvailable});
     Get.snackbar(
       'Status Updated',
-      isAvailable ? 'You are now available for donation' : 'You are now unavailable',
+      isAvailable ? 'You are now available' : 'You are now unavailable',
       backgroundColor: isAvailable ? Colors.green : Colors.grey,
       colorText: Colors.white,
     );
@@ -65,100 +65,197 @@ class _DashboardScreenState extends State<DashboardScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF8F8F8),
+      backgroundColor: const Color(0xFFF2F2F2),
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(20),
+        child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('Hello, $userName',
-                          style: const TextStyle(
-                              fontSize: 22, fontWeight: FontWeight.bold)),
-                      Text('Blood Group: $bloodGroup',
-                          style: const TextStyle(
-                              fontSize: 14, color: Colors.grey)),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 12, vertical: 6),
-                        decoration: BoxDecoration(
-                          color: isAvailable
-                              ? Colors.green.shade100
-                              : Colors.grey.shade200,
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        child: Text(
-                          isAvailable ? 'Available' : 'Unavailable',
-                          style: TextStyle(
-                            color: isAvailable ? Colors.green : Colors.grey,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(width: 8),
-                      IconButton(
-                        icon: const Icon(Icons.logout, color: Colors.grey),
-                        onPressed: logout,
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-              const SizedBox(height: 24),
-              StreamBuilder<QuerySnapshot>(
-                stream: FirebaseFirestore.instance
-                    .collection('requests')
-                    .where('status', isEqualTo: 'pending')
-                    .snapshots(),
-                builder: (context, snapshot) {
-                  final count = snapshot.data?.docs.length ?? 0;
-                  return Container(
-                    width: double.infinity,
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: const Color(0xFFE24B4A),
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text('Active Emergencies',
+              Padding(
+                padding: const EdgeInsets.fromLTRB(20, 16, 20, 0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: const [
+                        Text('✱',
                             style: TextStyle(
-                                color: Colors.white70, fontSize: 13)),
-                        Text('$count',
-                            style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 40,
+                                fontSize: 20,
+                                color: Color(0xFF0F6E56),
                                 fontWeight: FontWeight.bold)),
-                        const Text('requests need help right now',
+                        SizedBox(width: 6),
+                        Text('LifeLink',
                             style: TextStyle(
-                                color: Colors.white70, fontSize: 13)),
+                                fontSize: 20,
+                                fontWeight: FontWeight.w700,
+                                color: Color(0xFF0F6E56))),
                       ],
                     ),
-                  );
-                },
+                    Row(
+                      children: [
+                        const Icon(Icons.notifications_outlined,
+                            size: 24, color: Color(0xFF333333)),
+                        const SizedBox(width: 12),
+                        GestureDetector(
+                          onTap: logout,
+                          child: CircleAvatar(
+                            radius: 18,
+                            backgroundColor: const Color(0xFFD4A574),
+                            child: Text(
+                              userName.isNotEmpty
+                                  ? userName[0].toUpperCase()
+                                  : 'A',
+                              style: const TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
-              const SizedBox(height: 24),
-              Expanded(
+              Padding(
+                padding: const EdgeInsets.fromLTRB(20, 16, 20, 0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('Hello, ${userName.split(' ').first}',
+                            style: const TextStyle(
+                                fontSize: 26,
+                                fontWeight: FontWeight.w700,
+                                color: Color(0xFF111111))),
+                        Text('Blood Group $bloodGroup',
+                            style: const TextStyle(
+                                fontSize: 14, color: Color(0xFF666666))),
+                      ],
+                    ),
+                    GestureDetector(
+                      onTap: toggleAvailability,
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 14, vertical: 8),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          border: Border.all(
+                              color: isAvailable
+                                  ? const Color(0xFF0F6E56)
+                                  : Colors.grey,
+                              width: 1.5),
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: Row(
+                          children: [
+                            Container(
+                              width: 8,
+                              height: 8,
+                              decoration: BoxDecoration(
+                                color: isAvailable
+                                    ? const Color(0xFF0F6E56)
+                                    : Colors.grey,
+                                shape: BoxShape.circle,
+                              ),
+                            ),
+                            const SizedBox(width: 6),
+                            Text(
+                              isAvailable ? 'Available ✓' : 'Unavailable',
+                              style: TextStyle(
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.w600,
+                                  color: isAvailable
+                                      ? const Color(0xFF0F6E56)
+                                      : Colors.grey),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(20),
+                child: StreamBuilder<QuerySnapshot>(
+                  stream: FirebaseFirestore.instance
+                      .collection('requests')
+                      .where('status', isEqualTo: 'pending')
+                      .snapshots(),
+                  builder: (context, snapshot) {
+                    final count = snapshot.data?.docs.length ?? 0;
+                    return Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.all(20),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFC0392B),
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text('ACTIVE EMERGENCIES',
+                              style: TextStyle(
+                                  fontSize: 11,
+                                  fontWeight: FontWeight.w700,
+                                  letterSpacing: 1.5,
+                                  color: Colors.white70)),
+                          const SizedBox(height: 8),
+                          Row(
+                            children: [
+                              Text('$count',
+                                  style: const TextStyle(
+                                      fontSize: 52,
+                                      fontWeight: FontWeight.w700,
+                                      color: Colors.white,
+                                      height: 1)),
+                              const SizedBox(width: 12),
+                              const Text('requests need help\nright now',
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      color: Colors.white,
+                                      height: 1.4)),
+                            ],
+                          ),
+                          const SizedBox(height: 16),
+                          GestureDetector(
+                            onTap: () => Get.to(() => const FeedScreen()),
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 20, vertical: 12),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              child: const Text('View Requests →',
+                                  style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w600,
+                                      color: Color(0xFFA32D2D))),
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: GridView.count(
                   crossAxisCount: 2,
-                  crossAxisSpacing: 16,
-                  mainAxisSpacing: 16,
+                  crossAxisSpacing: 12,
+                  mainAxisSpacing: 12,
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
                   children: [
                     _tile(
                       icon: Icons.bloodtype,
                       label: 'Request Blood',
-                      color: const Color(0xFFE24B4A),
+                      iconBg: const Color(0xFFFCEBEB),
+                      iconColor: const Color(0xFFA32D2D),
                       onTap: () => Get.to(() => const RequestFormScreen()),
                     ),
                     _tile(
@@ -166,47 +263,158 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           ? Icons.toggle_on
                           : Icons.toggle_off,
                       label: isAvailable ? 'Available' : 'Unavailable',
-                      color: isAvailable ? Colors.green : Colors.grey,
+                      iconBg: const Color(0xFFEAF3DE),
+                      iconColor: const Color(0xFF3B6D11),
                       onTap: toggleAvailability,
                     ),
                     _tile(
-                      icon: Icons.map,
+                      icon: Icons.explore,
                       label: 'Live Map',
-                      color: Colors.blue,
+                      iconBg: const Color(0xFFE6F1FB),
+                      iconColor: const Color(0xFF185FA5),
                       onTap: () => Get.to(() => const MapScreen()),
                     ),
                     _tile(
                       icon: Icons.local_hospital,
                       label: 'Hospitals',
-                      color: Colors.teal,
+                      iconBg: const Color(0xFFE1F5EE),
+                      iconColor: const Color(0xFF0F6E56),
                       onTap: () => Get.to(() => const HospitalScreen()),
                     ),
                     _tile(
                       icon: Icons.emergency,
                       label: 'Ambulance',
-                      color: Colors.orange,
+                      iconBg: const Color(0xFFFAEEDA),
+                      iconColor: const Color(0xFFBA7517),
                       onTap: () => Get.to(() => const AmbulanceScreen()),
+                    ),
+                    _tile(
+                      icon: Icons.history,
+                      label: 'History',
+                      iconBg: const Color(0xFFEEEDFE),
+                      iconColor: const Color(0xFF534AB7),
+                      onTap: () => Get.snackbar(
+                        'Coming Soon',
+                        'History feature coming soon!',
+                        backgroundColor: Colors.purple,
+                        colorText: Colors.white,
+                      ),
                     ),
                   ],
                 ),
               ),
+              const Padding(
+                padding: EdgeInsets.fromLTRB(20, 24, 20, 12),
+                child: Text('Nearby Donors',
+                    style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w700,
+                        color: Color(0xFF111111))),
+              ),
+              StreamBuilder<QuerySnapshot>(
+                stream: FirebaseFirestore.instance
+                    .collection('users')
+                    .where('available', isEqualTo: true)
+                    .limit(5)
+                    .snapshots(),
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData ||
+                      snapshot.data!.docs.isEmpty) {
+                    return const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 20),
+                      child: Text('No donors nearby',
+                          style: TextStyle(color: Colors.grey)),
+                    );
+                  }
+                  final donors = snapshot.data!.docs
+                      .where((d) => d.id != uid)
+                      .toList();
+                  return ListView.separated(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    itemCount: donors.length,
+                    separatorBuilder: (_, __) => const Divider(height: 1),
+                    itemBuilder: (context, i) {
+                      final data =
+                          donors[i].data() as Map<String, dynamic>;
+                      final name = data['name'] ?? 'Unknown';
+                      final bg = data['bloodGroup'] ?? '?';
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 12),
+                        child: Row(
+                          children: [
+                            CircleAvatar(
+                              radius: 20,
+                              backgroundColor:
+                                  const Color(0xFF0F6E56),
+                              child: Text(
+                                name.isNotEmpty
+                                    ? name[0].toUpperCase()
+                                    : '?',
+                                style: const TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                            const SizedBox(width: 12),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment:
+                                    CrossAxisAlignment.start,
+                                children: [
+                                  Text(name,
+                                      style: const TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w600,
+                                          color: Color(0xFF111111))),
+                                  const Row(
+                                    children: [
+                                      Icon(Icons.location_on,
+                                          size: 12,
+                                          color: Colors.grey),
+                                      Text('Nearby',
+                                          style: TextStyle(
+                                              fontSize: 12,
+                                              color: Colors.grey)),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Text(bg,
+                                style: const TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w700,
+                                    color: Color(0xFFA32D2D))),
+                          ],
+                        ),
+                      );
+                    },
+                  );
+                },
+              ),
+              const SizedBox(height: 20),
             ],
           ),
         ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: 0,
-        selectedItemColor: const Color(0xFFE24B4A),
-        unselectedItemColor: Colors.grey,
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(icon: Icon(Icons.map), label: 'Map'),
-          BottomNavigationBarItem(icon: Icon(Icons.feed), label: 'Feed'),
-        ],
-        onTap: (i) {
-          if (i == 1) Get.to(() => const MapScreen());
-          if (i == 2) Get.to(() => const FeedScreen());
-        },
+      bottomNavigationBar: Container(
+        decoration: const BoxDecoration(
+          color: Colors.white,
+          border: Border(top: BorderSide(color: Color(0xFFEEEEEE))),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            _navItem(Icons.home, 'HOME', true,
+                () {}),
+            _navItem(Icons.map, 'MAP', false,
+                () => Get.to(() => const MapScreen())),
+            _navItem(Icons.rss_feed, 'FEED', false,
+                () => Get.to(() => const FeedScreen())),
+          ],
+        ),
       ),
     );
   }
@@ -214,7 +422,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
   Widget _tile({
     required IconData icon,
     required String label,
-    required Color color,
+    required Color iconBg,
+    required Color iconColor,
     required VoidCallback onTap,
   }) {
     return GestureDetector(
@@ -223,23 +432,59 @@ class _DashboardScreenState extends State<DashboardScreen> {
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(16),
-          boxShadow: [
-            BoxShadow(
-                color: Colors.black.withOpacity(0.05),
-                blurRadius: 8,
-                offset: const Offset(0, 2))
+        ),
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Container(
+              width: 44,
+              height: 44,
+              decoration: BoxDecoration(
+                color: iconBg,
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Icon(icon, color: iconColor, size: 24),
+            ),
+            Text(label,
+                style: const TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                    color: Color(0xFF222222))),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _navItem(
+      IconData icon, String label, bool active, VoidCallback onTap) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+        margin: const EdgeInsets.symmetric(vertical: 8),
+        decoration: BoxDecoration(
+          color: active ? const Color(0xFFFCEBEB) : Colors.transparent,
+          borderRadius: BorderRadius.circular(12),
+        ),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(icon, size: 48, color: color),
-            const SizedBox(height: 12),
+            Icon(icon,
+                color: active
+                    ? const Color(0xFFA32D2D)
+                    : const Color(0xFF888888),
+                size: 22),
+            const SizedBox(height: 2),
             Text(label,
                 style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600,
-                    color: color)),
+                    fontSize: 10,
+                    fontWeight: FontWeight.w700,
+                    color: active
+                        ? const Color(0xFFA32D2D)
+                        : const Color(0xFF888888))),
           ],
         ),
       ),
