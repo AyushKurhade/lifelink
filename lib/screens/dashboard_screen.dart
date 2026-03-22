@@ -19,6 +19,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   bool isAvailable = true;
   String userName = '';
   String bloodGroup = '';
+  String phone = '';
   final uid = FirebaseAuth.instance.currentUser?.uid;
 
   @override
@@ -37,6 +38,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       setState(() {
         userName = doc['name'] ?? '';
         bloodGroup = doc['bloodGroup'] ?? '';
+        phone = doc['phone'] ?? '';
         isAvailable = doc['available'] ?? true;
       });
     }
@@ -60,6 +62,157 @@ class _DashboardScreenState extends State<DashboardScreen> {
   void logout() async {
     await FirebaseAuth.instance.signOut();
     Get.offAll(() => const LoginScreen());
+  }
+
+  void showProfile() {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      isScrollControlled: true,
+      builder: (_) => Padding(
+        padding: EdgeInsets.only(
+            bottom: MediaQuery.of(context).viewInsets.bottom),
+        child: Container(
+          decoration: const BoxDecoration(
+            color: Colors.white,
+            borderRadius:
+                BorderRadius.vertical(top: Radius.circular(24)),
+          ),
+          padding: const EdgeInsets.all(24),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                width: 40,
+                height: 4,
+                decoration: BoxDecoration(
+                  color: Colors.grey.shade300,
+                  borderRadius: BorderRadius.circular(2),
+                ),
+              ),
+              const SizedBox(height: 20),
+              CircleAvatar(
+                radius: 36,
+                backgroundColor: const Color(0xFFD4A574),
+                child: Text(
+                  userName.isNotEmpty
+                      ? userName[0].toUpperCase()
+                      : 'A',
+                  style: const TextStyle(
+                      fontSize: 28,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white),
+                ),
+              ),
+              const SizedBox(height: 12),
+              Text(userName,
+                  style: const TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w700,
+                      color: Color(0xFF111111))),
+              const SizedBox(height: 4),
+              Text('+91 $phone',
+                  style: const TextStyle(
+                      fontSize: 14, color: Colors.grey)),
+              const SizedBox(height: 16),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 16, vertical: 8),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFFCEBEB),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Text(bloodGroup,
+                        style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w700,
+                            color: Color(0xFFA32D2D))),
+                  ),
+                  const SizedBox(width: 12),
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 16, vertical: 8),
+                    decoration: BoxDecoration(
+                      color: isAvailable
+                          ? const Color(0xFFEAF3DE)
+                          : Colors.grey.shade100,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Text(
+                      isAvailable ? 'Available' : 'Unavailable',
+                      style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w600,
+                          color: isAvailable
+                              ? const Color(0xFF3B6D11)
+                              : Colors.grey),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 20),
+              const Divider(),
+              ListTile(
+                leading: const CircleAvatar(
+                  backgroundColor: Color(0xFFEAF3DE),
+                  child: Icon(Icons.bloodtype,
+                      color: Color(0xFF3B6D11), size: 20),
+                ),
+                title: const Text('Blood Group',
+                    style:
+                        TextStyle(fontWeight: FontWeight.w600)),
+                trailing: Text(bloodGroup,
+                    style: const TextStyle(
+                        fontWeight: FontWeight.w700,
+                        color: Color(0xFFA32D2D),
+                        fontSize: 16)),
+              ),
+              ListTile(
+                leading: const CircleAvatar(
+                  backgroundColor: Color(0xFFE6F1FB),
+                  child: Icon(Icons.phone,
+                      color: Color(0xFF185FA5), size: 20),
+                ),
+                title: const Text('Phone',
+                    style:
+                        TextStyle(fontWeight: FontWeight.w600)),
+                trailing: Text('+91 $phone',
+                    style:
+                        const TextStyle(color: Colors.grey)),
+              ),
+              const SizedBox(height: 16),
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton.icon(
+                  onPressed: () {
+                    Navigator.pop(context);
+                    logout();
+                  },
+                  icon: const Icon(Icons.logout,
+                      color: Colors.white),
+                  label: const Text('Logout',
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w700,
+                          fontSize: 16)),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFFA32D2D),
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 14),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12)),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 8),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 
   @override
@@ -94,21 +247,43 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     Row(
                       children: [
                         const Icon(Icons.notifications_outlined,
-                            size: 24, color: Color(0xFF333333)),
+                            size: 24,
+                            color: Color(0xFF333333)),
                         const SizedBox(width: 12),
                         GestureDetector(
-                          onTap: logout,
+                          onTap: showProfile,
                           child: CircleAvatar(
                             radius: 18,
-                            backgroundColor: const Color(0xFFD4A574),
+                            backgroundColor:
+                                const Color(0xFFD4A574),
                             child: Text(
                               userName.isNotEmpty
                                   ? userName[0].toUpperCase()
                                   : 'A',
                               style: const TextStyle(
                                   color: Colors.white,
-                                  fontWeight: FontWeight.bold),
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16),
                             ),
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        GestureDetector(
+                          onTap: logout,
+                          child: Container(
+                            width: 34,
+                            height: 34,
+                            decoration: BoxDecoration(
+                              color: const Color(0xFFFCEBEB),
+                              borderRadius:
+                                  BorderRadius.circular(8),
+                              border: Border.all(
+                                  color: const Color(0xFFF7C1C1),
+                                  width: 1.5),
+                            ),
+                            child: const Icon(Icons.logout,
+                                color: Color(0xFFA32D2D),
+                                size: 18),
                           ),
                         ),
                       ],
@@ -117,21 +292,26 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.fromLTRB(20, 16, 20, 0),
+                padding:
+                    const EdgeInsets.fromLTRB(20, 16, 20, 0),
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment:
+                      MainAxisAlignment.spaceBetween,
                   children: [
                     Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                      crossAxisAlignment:
+                          CrossAxisAlignment.start,
                       children: [
-                        Text('Hello, ${userName.split(' ').first}',
+                        Text(
+                            'Hello, ${userName.split(' ').first}',
                             style: const TextStyle(
                                 fontSize: 26,
                                 fontWeight: FontWeight.w700,
                                 color: Color(0xFF111111))),
                         Text('Blood Group $bloodGroup',
                             style: const TextStyle(
-                                fontSize: 14, color: Color(0xFF666666))),
+                                fontSize: 14,
+                                color: Color(0xFF666666))),
                       ],
                     ),
                     GestureDetector(
@@ -146,7 +326,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                   ? const Color(0xFF0F6E56)
                                   : Colors.grey,
                               width: 1.5),
-                          borderRadius: BorderRadius.circular(20),
+                          borderRadius:
+                              BorderRadius.circular(20),
                         ),
                         child: Row(
                           children: [
@@ -162,7 +343,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             ),
                             const SizedBox(width: 6),
                             Text(
-                              isAvailable ? 'Available ✓' : 'Unavailable',
+                              isAvailable
+                                  ? 'Available ✓'
+                                  : 'Unavailable',
                               style: TextStyle(
                                   fontSize: 13,
                                   fontWeight: FontWeight.w600,
@@ -185,7 +368,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       .where('status', isEqualTo: 'pending')
                       .snapshots(),
                   builder: (context, snapshot) {
-                    final count = snapshot.data?.docs.length ?? 0;
+                    final count =
+                        snapshot.data?.docs.length ?? 0;
                     return Container(
                       width: double.infinity,
                       padding: const EdgeInsets.all(20),
@@ -194,7 +378,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         borderRadius: BorderRadius.circular(20),
                       ),
                       child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                        crossAxisAlignment:
+                            CrossAxisAlignment.start,
                         children: [
                           const Text('ACTIVE EMERGENCIES',
                               style: TextStyle(
@@ -212,7 +397,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                       color: Colors.white,
                                       height: 1)),
                               const SizedBox(width: 12),
-                              const Text('requests need help\nright now',
+                              const Text(
+                                  'requests need help\nright now',
                                   style: TextStyle(
                                       fontSize: 16,
                                       color: Colors.white,
@@ -221,19 +407,26 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           ),
                           const SizedBox(height: 16),
                           GestureDetector(
-                            onTap: () => Get.to(() => const FeedScreen()),
+                            onTap: () => Get.to(
+                                () => const FeedScreen()),
                             child: Container(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 20, vertical: 12),
+                              padding:
+                                  const EdgeInsets.symmetric(
+                                      horizontal: 20,
+                                      vertical: 12),
                               decoration: BoxDecoration(
                                 color: Colors.white,
-                                borderRadius: BorderRadius.circular(12),
+                                borderRadius:
+                                    BorderRadius.circular(12),
                               ),
-                              child: const Text('View Requests →',
+                              child: const Text(
+                                  'View Requests →',
                                   style: TextStyle(
                                       fontSize: 14,
-                                      fontWeight: FontWeight.w600,
-                                      color: Color(0xFFA32D2D))),
+                                      fontWeight:
+                                          FontWeight.w600,
+                                      color:
+                                          Color(0xFFA32D2D))),
                             ),
                           ),
                         ],
@@ -243,26 +436,31 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20),
                 child: GridView.count(
                   crossAxisCount: 2,
                   crossAxisSpacing: 12,
                   mainAxisSpacing: 12,
                   shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
+                  physics:
+                      const NeverScrollableScrollPhysics(),
                   children: [
                     _tile(
                       icon: Icons.bloodtype,
                       label: 'Request Blood',
                       iconBg: const Color(0xFFFCEBEB),
                       iconColor: const Color(0xFFA32D2D),
-                      onTap: () => Get.to(() => const RequestFormScreen()),
+                      onTap: () => Get.to(
+                          () => const RequestFormScreen()),
                     ),
                     _tile(
                       icon: isAvailable
                           ? Icons.toggle_on
                           : Icons.toggle_off,
-                      label: isAvailable ? 'Available' : 'Unavailable',
+                      label: isAvailable
+                          ? 'Available'
+                          : 'Unavailable',
                       iconBg: const Color(0xFFEAF3DE),
                       iconColor: const Color(0xFF3B6D11),
                       onTap: toggleAvailability,
@@ -272,21 +470,24 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       label: 'Live Map',
                       iconBg: const Color(0xFFE6F1FB),
                       iconColor: const Color(0xFF185FA5),
-                      onTap: () => Get.to(() => const MapScreen()),
+                      onTap: () =>
+                          Get.to(() => const MapScreen()),
                     ),
                     _tile(
                       icon: Icons.local_hospital,
                       label: 'Hospitals',
                       iconBg: const Color(0xFFE1F5EE),
                       iconColor: const Color(0xFF0F6E56),
-                      onTap: () => Get.to(() => const HospitalScreen()),
+                      onTap: () =>
+                          Get.to(() => const HospitalScreen()),
                     ),
                     _tile(
                       icon: Icons.emergency,
                       label: 'Ambulance',
                       iconBg: const Color(0xFFFAEEDA),
                       iconColor: const Color(0xFFBA7517),
-                      onTap: () => Get.to(() => const AmbulanceScreen()),
+                      onTap: () => Get.to(
+                          () => const AmbulanceScreen()),
                     ),
                     _tile(
                       icon: Icons.history,
@@ -304,7 +505,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 ),
               ),
               const Padding(
-                padding: EdgeInsets.fromLTRB(20, 24, 20, 12),
+                padding:
+                    EdgeInsets.fromLTRB(20, 24, 20, 12),
                 child: Text('Nearby Donors',
                     style: TextStyle(
                         fontSize: 18,
@@ -321,9 +523,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   if (!snapshot.hasData ||
                       snapshot.data!.docs.isEmpty) {
                     return const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 20),
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 20),
                       child: Text('No donors nearby',
-                          style: TextStyle(color: Colors.grey)),
+                          style:
+                              TextStyle(color: Colors.grey)),
                     );
                   }
                   final donors = snapshot.data!.docs
@@ -331,17 +535,21 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       .toList();
                   return ListView.separated(
                     shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    physics:
+                        const NeverScrollableScrollPhysics(),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20),
                     itemCount: donors.length,
-                    separatorBuilder: (_, __) => const Divider(height: 1),
+                    separatorBuilder: (_, __) =>
+                        const Divider(height: 1),
                     itemBuilder: (context, i) {
-                      final data =
-                          donors[i].data() as Map<String, dynamic>;
+                      final data = donors[i].data()
+                          as Map<String, dynamic>;
                       final name = data['name'] ?? 'Unknown';
                       final bg = data['bloodGroup'] ?? '?';
                       return Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 12),
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 12),
                         child: Row(
                           children: [
                             CircleAvatar(
@@ -354,7 +562,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                     : '?',
                                 style: const TextStyle(
                                     color: Colors.white,
-                                    fontWeight: FontWeight.bold),
+                                    fontWeight:
+                                        FontWeight.bold),
                               ),
                             ),
                             const SizedBox(width: 12),
@@ -366,8 +575,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                   Text(name,
                                       style: const TextStyle(
                                           fontSize: 14,
-                                          fontWeight: FontWeight.w600,
-                                          color: Color(0xFF111111))),
+                                          fontWeight:
+                                              FontWeight.w600,
+                                          color: Color(
+                                              0xFF111111))),
                                   const Row(
                                     children: [
                                       Icon(Icons.location_on,
@@ -376,7 +587,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                       Text('Nearby',
                                           style: TextStyle(
                                               fontSize: 12,
-                                              color: Colors.grey)),
+                                              color:
+                                                  Colors.grey)),
                                     ],
                                   ),
                                 ],
@@ -386,7 +598,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                 style: const TextStyle(
                                     fontSize: 16,
                                     fontWeight: FontWeight.w700,
-                                    color: Color(0xFFA32D2D))),
+                                    color:
+                                        Color(0xFFA32D2D))),
                           ],
                         ),
                       );
@@ -402,13 +615,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
       bottomNavigationBar: Container(
         decoration: const BoxDecoration(
           color: Colors.white,
-          border: Border(top: BorderSide(color: Color(0xFFEEEEEE))),
+          border: Border(
+              top: BorderSide(color: Color(0xFFEEEEEE))),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            _navItem(Icons.home, 'HOME', true,
-                () {}),
+            _navItem(Icons.home, 'HOME', true, () {}),
             _navItem(Icons.map, 'MAP', false,
                 () => Get.to(() => const MapScreen())),
             _navItem(Icons.rss_feed, 'FEED', false,
@@ -458,15 +671,18 @@ class _DashboardScreenState extends State<DashboardScreen> {
     );
   }
 
-  Widget _navItem(
-      IconData icon, String label, bool active, VoidCallback onTap) {
+  Widget _navItem(IconData icon, String label, bool active,
+      VoidCallback onTap) {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+        padding: const EdgeInsets.symmetric(
+            vertical: 10, horizontal: 20),
         margin: const EdgeInsets.symmetric(vertical: 8),
         decoration: BoxDecoration(
-          color: active ? const Color(0xFFFCEBEB) : Colors.transparent,
+          color: active
+              ? const Color(0xFFFCEBEB)
+              : Colors.transparent,
           borderRadius: BorderRadius.circular(12),
         ),
         child: Column(

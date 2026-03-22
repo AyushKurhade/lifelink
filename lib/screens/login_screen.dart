@@ -398,6 +398,16 @@ class _LoginScreenState extends State<LoginScreen> {
                                 color: Color(0xFF555555))),
                       ],
                     ),
+                    const SizedBox(height: 24),
+                    const Text(
+                      'Developed by Neural Coders',
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: Color(0xFFAAAAAA),
+                        letterSpacing: 0.5,
+                      ),
+                    ),
+                    const SizedBox(height: 20),
                   ],
                 ),
               ),
