@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
-import 'login_screen.dart';
+import 'register_screen.dart';
 import 'dashboard_screen.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -38,7 +38,7 @@ class _SplashScreenState extends State<SplashScreen>
     if (FirebaseAuth.instance.currentUser != null) {
       Get.offAll(() => const DashboardScreen());
     } else {
-      Get.offAll(() => const LoginScreen());
+      Get.offAll(() => const RegisterScreen());
     }
   }
 

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
+import 'request_success_screen.dart';
 
 class RequestFormScreen extends StatefulWidget {
   const RequestFormScreen({super.key});
@@ -58,15 +59,10 @@ class _RequestFormScreenState extends State<RequestFormScreen> {
         'acceptedBy': null,
       });
       setState(() => isLoading = false);
-      Get.back();
-      Get.snackbar(
-        'Request Sent!',
-        'Finding donors near you...',
-        backgroundColor: const Color(0xFF0F6E56),
-        colorText: Colors.white,
-        icon: const Icon(Icons.check_circle, color: Colors.white),
-        duration: const Duration(seconds: 3),
-      );
+      Get.offAll(() => RequestSuccessScreen(
+            bloodGroup: selectedBloodGroup,
+            urgency: selectedUrgency,
+          ));
     } catch (e) {
       setState(() => isLoading = false);
       Get.snackbar('Error', 'Failed to send request',

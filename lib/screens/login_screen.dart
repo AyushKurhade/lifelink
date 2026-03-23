@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:get/get.dart';
 import 'dashboard_screen.dart';
+import 'register_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -134,7 +135,8 @@ class _LoginScreenState extends State<LoginScreen> {
             style: ElevatedButton.styleFrom(
               backgroundColor: const Color(0xFFA32D2D),
             ),
-            child: const Text('Save', style: TextStyle(color: Colors.white)),
+            child: const Text('Save',
+                style: TextStyle(color: Colors.white)),
           ),
         ],
       ),
@@ -153,14 +155,14 @@ class _LoginScreenState extends State<LoginScreen> {
             children: [
               const SizedBox(height: 20),
               Row(
-                children: [
-                  const Text('✱',
+                children: const [
+                  Text('✱',
                       style: TextStyle(
                           fontSize: 32,
                           color: Color(0xFFA32D2D),
                           fontWeight: FontWeight.bold)),
-                  const SizedBox(width: 8),
-                  const Text('LifeLink',
+                  SizedBox(width: 8),
+                  Text('LifeLink',
                       style: TextStyle(
                           fontSize: 36,
                           fontWeight: FontWeight.bold,
@@ -170,7 +172,8 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               const SizedBox(height: 4),
               const Text('Emergency Blood Response',
-                  style: TextStyle(fontSize: 17, color: Color(0xFF444444))),
+                  style: TextStyle(
+                      fontSize: 17, color: Color(0xFF444444))),
               const SizedBox(height: 32),
               Container(
                 decoration: BoxDecoration(
@@ -201,7 +204,8 @@ class _LoginScreenState extends State<LoginScreen> {
                             decoration: const BoxDecoration(
                               border: Border(
                                 right: BorderSide(
-                                    color: Color(0xFFDDDDDD), width: 1.5),
+                                    color: Color(0xFFDDDDDD),
+                                    width: 1.5),
                               ),
                             ),
                             child: const Text('+91',
@@ -217,11 +221,11 @@ class _LoginScreenState extends State<LoginScreen> {
                               maxLength: 10,
                               decoration: const InputDecoration(
                                 hintText: '9876543210',
-                                hintStyle:
-                                    TextStyle(color: Color(0xFFAAAAAA)),
+                                hintStyle: TextStyle(
+                                    color: Color(0xFFAAAAAA)),
                                 border: InputBorder.none,
-                                contentPadding:
-                                    EdgeInsets.symmetric(horizontal: 16),
+                                contentPadding: EdgeInsets.symmetric(
+                                    horizontal: 16),
                                 counterText: '',
                               ),
                             ),
@@ -236,9 +240,11 @@ class _LoginScreenState extends State<LoginScreen> {
                         onPressed: isLoading ? null : sendOTP,
                         style: ElevatedButton.styleFrom(
                           backgroundColor: const Color(0xFFA32D2D),
-                          padding: const EdgeInsets.symmetric(vertical: 16),
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 16),
                           shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12)),
+                              borderRadius:
+                                  BorderRadius.circular(12)),
                         ),
                         child: isLoading
                             ? const CircularProgressIndicator(
@@ -264,7 +270,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisAlignment:
+                          MainAxisAlignment.spaceBetween,
                       children: [
                         const Text('ENTER VERIFICATION CODE',
                             style: TextStyle(
@@ -290,11 +297,13 @@ class _LoginScreenState extends State<LoginScreen> {
                       children: List.generate(6, (i) {
                         return Expanded(
                           child: Container(
-                            margin: EdgeInsets.only(right: i < 5 ? 8 : 0),
+                            margin: EdgeInsets.only(
+                                right: i < 5 ? 8 : 0),
                             height: 52,
                             decoration: BoxDecoration(
                               color: Colors.white,
-                              borderRadius: BorderRadius.circular(10),
+                              borderRadius:
+                                  BorderRadius.circular(10),
                             ),
                             child: TextField(
                               controller: otpControllers[i],
@@ -311,10 +320,12 @@ class _LoginScreenState extends State<LoginScreen> {
                               ),
                               onChanged: (v) {
                                 if (v.isNotEmpty && i < 5) {
-                                  otpFocusNodes[i + 1].requestFocus();
+                                  otpFocusNodes[i + 1]
+                                      .requestFocus();
                                 }
                                 if (v.isEmpty && i > 0) {
-                                  otpFocusNodes[i - 1].requestFocus();
+                                  otpFocusNodes[i - 1]
+                                      .requestFocus();
                                 }
                               },
                             ),
@@ -328,10 +339,13 @@ class _LoginScreenState extends State<LoginScreen> {
                       child: ElevatedButton(
                         onPressed: isLoading ? null : verifyOTP,
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFF1A1A1A),
-                          padding: const EdgeInsets.symmetric(vertical: 16),
+                          backgroundColor:
+                              const Color(0xFF1A1A1A),
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 16),
                           shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12)),
+                              borderRadius:
+                                  BorderRadius.circular(12)),
                         ),
                         child: isLoading
                             ? const CircularProgressIndicator(
@@ -354,20 +368,24 @@ class _LoginScreenState extends State<LoginScreen> {
                       textAlign: TextAlign.center,
                       text: const TextSpan(
                         style: TextStyle(
-                            fontSize: 12, color: Color(0xFF888888)),
+                            fontSize: 12,
+                            color: Color(0xFF888888)),
                         children: [
                           TextSpan(
-                              text: "By continuing, you agree to LifeLink's "),
+                              text:
+                                  "By continuing, you agree to LifeLink's "),
                           TextSpan(
                               text: 'Terms of Service',
                               style: TextStyle(
-                                  decoration: TextDecoration.underline,
+                                  decoration:
+                                      TextDecoration.underline,
                                   color: Color(0xFF555555))),
                           TextSpan(text: ' and '),
                           TextSpan(
                               text: 'Privacy Policy',
                               style: TextStyle(
-                                  decoration: TextDecoration.underline,
+                                  decoration:
+                                      TextDecoration.underline,
                                   color: Color(0xFF555555))),
                           TextSpan(text: '.'),
                         ],
@@ -399,6 +417,29 @@ class _LoginScreenState extends State<LoginScreen> {
                       ],
                     ),
                     const SizedBox(height: 24),
+                    GestureDetector(
+                      onTap: () =>
+                          Get.to(() => const RegisterScreen()),
+                      child: RichText(
+                        text: const TextSpan(
+                          style: TextStyle(fontSize: 13),
+                          children: [
+                            TextSpan(
+                                text: "Don't have an account? ",
+                                style: TextStyle(
+                                    color: Color(0xFF888888))),
+                            TextSpan(
+                                text: 'Register',
+                                style: TextStyle(
+                                    color: Color(0xFFA32D2D),
+                                    fontWeight: FontWeight.w700,
+                                    decoration:
+                                        TextDecoration.underline)),
+                          ],
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 12),
                     const Text(
                       'Developed by Neural Coders',
                       style: TextStyle(
