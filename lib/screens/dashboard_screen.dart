@@ -604,7 +604,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Container(
+              Container(
               width: 44,
               height: 44,
               decoration: BoxDecoration(

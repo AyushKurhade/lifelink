@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:get/get.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'dashboard_screen.dart';
 import 'map_screen.dart';
 import 'feed_screen.dart';
@@ -12,32 +12,32 @@ class HospitalScreen extends StatelessWidget {
     {
       'name': 'GMCH Nagpur',
       'specialty': 'Trauma & General',
-      'phone': '07122742776',
-      'distance': '1.2 km away',
+      'distance': '1.2 km',
+      'type': 'Government',
     },
     {
       'name': 'Alexis Hospital',
       'specialty': 'Multi-specialty',
-      'phone': '07122228888',
-      'distance': '3.4 km away',
+      'distance': '3.4 km',
+      'type': 'Private',
     },
     {
       'name': 'Wockhardt Hospital',
       'specialty': 'Emergency Care',
-      'phone': '07122299999',
-      'distance': '4.1 km away',
+      'distance': '4.1 km',
+      'type': 'Private',
     },
     {
       'name': 'Orange City Hospital',
       'specialty': 'General & Blood Bank',
-      'phone': '07122244444',
-      'distance': '5.8 km away',
+      'distance': '5.8 km',
+      'type': 'Private',
     },
     {
       'name': 'KIMS Hospital',
       'specialty': 'Multi-specialty',
-      'phone': '07122255555',
-      'distance': '7.2 km away',
+      'distance': '7.2 km',
+      'type': 'Private',
     },
   ];
 
@@ -96,22 +96,35 @@ class HospitalScreen extends StatelessWidget {
                           color: Color(0xFF111111),
                           height: 1.2)),
                   const SizedBox(height: 16),
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 16, vertical: 12),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Row(
-                      children: const [
-                        Icon(Icons.location_on,
-                            color: Color(0xFF0F6E56), size: 20),
-                        SizedBox(width: 8),
-                        Text('Scanning 10km radius from Nagpur, India',
-                            style: TextStyle(
-                                fontSize: 13, color: Color(0xFF555555))),
-                      ],
+                  GestureDetector(
+                    onTap: () async {
+                      final url = Uri.parse(
+                          'https://www.google.com/maps/search/hospitals+near+me');
+                      await launchUrl(url,
+                          mode: LaunchMode.externalApplication);
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 16, vertical: 12),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Row(
+                        children: const [
+                          Icon(Icons.location_on,
+                              color: Color(0xFF0F6E56), size: 20),
+                          SizedBox(width: 8),
+                          Text(
+                              'Scanning 10km radius from Nagpur, India',
+                              style: TextStyle(
+                                  fontSize: 13,
+                                  color: Color(0xFF555555))),
+                          Spacer(),
+                          Icon(Icons.open_in_new,
+                              color: Colors.grey, size: 16),
+                        ],
+                      ),
                     ),
                   ),
                 ],
@@ -137,7 +150,7 @@ class HospitalScreen extends StatelessWidget {
                               size: 36, color: Colors.grey),
                           SizedBox(height: 8),
                           Text(
-                            'Viewing hospitals within Nagpur city limits.\nTap a hospital to see real-time bed availability.',
+                            'Viewing hospitals within Nagpur city limits.\nTap the location bar above to find more on Google Maps.',
                             textAlign: TextAlign.center,
                             style: TextStyle(
                                 fontSize: 13,
@@ -171,7 +184,8 @@ class HospitalScreen extends StatelessWidget {
                         const SizedBox(width: 14),
                         Expanded(
                           child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                            crossAxisAlignment:
+                                CrossAxisAlignment.start,
                             children: [
                               Text(h['name']!,
                                   style: const TextStyle(
@@ -194,27 +208,53 @@ class HospitalScreen extends StatelessWidget {
                                       style: const TextStyle(
                                           fontSize: 12,
                                           color: Color(0xFF0F6E56),
-                                          fontWeight: FontWeight.w600)),
+                                          fontWeight:
+                                              FontWeight.w600)),
+                                  const SizedBox(width: 8),
+                                  Container(
+                                    padding:
+                                        const EdgeInsets.symmetric(
+                                            horizontal: 6,
+                                            vertical: 2),
+                                    decoration: BoxDecoration(
+                                      color: h['type'] == 'Government'
+                                          ? const Color(0xFFE6F1FB)
+                                          : const Color(0xFFF2F2F2),
+                                      borderRadius:
+                                          BorderRadius.circular(4),
+                                    ),
+                                    child: Text(h['type']!,
+                                        style: TextStyle(
+                                            fontSize: 10,
+                                            fontWeight:
+                                                FontWeight.w600,
+                                            color: h['type'] ==
+                                                    'Government'
+                                                ? const Color(
+                                                    0xFF185FA5)
+                                                : Colors.grey)),
+                                  ),
                                 ],
                               ),
                             ],
                           ),
                         ),
                         GestureDetector(
-                          onTap: () => launchUrl(
-                              Uri.parse('tel:${h['phone']}')),
+                          onTap: () async {
+                            final url = Uri.parse(
+                                'https://www.google.com/maps/search/${Uri.encodeComponent(h['name']! + ' Nagpur')}');
+                            await launchUrl(url,
+                                mode: LaunchMode.externalApplication);
+                          },
                           child: Container(
                             padding: const EdgeInsets.symmetric(
-                                horizontal: 16, vertical: 10),
+                                horizontal: 12, vertical: 10),
                             decoration: BoxDecoration(
                               color: const Color(0xFF0F6E56),
                               borderRadius: BorderRadius.circular(10),
                             ),
-                            child: const Text('Call',
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w700,
-                                    fontSize: 13)),
+                            child: const Icon(Icons.directions,
+                                color: Colors.white, size: 18),
                           ),
                         ),
                       ],
@@ -227,9 +267,13 @@ class HospitalScreen extends StatelessWidget {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => Get.to(() => const MapScreen()),
+        onPressed: () async {
+          final url = Uri.parse(
+              'https://www.google.com/maps/search/hospitals+near+me');
+          await launchUrl(url, mode: LaunchMode.externalApplication);
+        },
         backgroundColor: const Color(0xFF0F6E56),
-        child: const Icon(Icons.explore, color: Colors.white),
+        child: const Icon(Icons.map, color: Colors.white),
       ),
       bottomNavigationBar: Container(
         decoration: const BoxDecoration(
