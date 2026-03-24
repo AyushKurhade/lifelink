@@ -37,7 +37,7 @@ class RequestSuccessScreen extends StatelessWidget {
     },
     {
       'name': 'Sant Gadgebaba Blood Bank',
-      'address': 'Opposite Srihari Hospital, Badnera Road, Badnera, Amravati',
+      'address': 'Opposite Srihari Hospital, Badnera Road, Amravati',
       'phone': '07122244444',
       'distance': '4.1 km',
       'inventory': {
@@ -59,9 +59,12 @@ class RequestSuccessScreen extends StatelessWidget {
 
   Color _urgencyColor(String urgency) {
     switch (urgency) {
-      case 'Critical': return const Color(0xFFA32D2D);
-      case 'Urgent': return const Color(0xFFBA7517);
-      default: return const Color(0xFF3B6D11);
+      case 'Critical':
+        return const Color(0xFFA32D2D);
+      case 'Urgent':
+        return const Color(0xFFBA7517);
+      default:
+        return const Color(0xFF3B6D11);
     }
   }
 
@@ -139,7 +142,126 @@ class RequestSuccessScreen extends StatelessWidget {
                   ),
                 ],
               ),
-              const SizedBox(height: 24),
+              const SizedBox(height: 20),
+
+              // ✅ DONOR ACCEPTED POPUP CARD
+              StreamBuilder<QuerySnapshot>(
+                stream: FirebaseFirestore.instance
+                    .collection('requests')
+                    .where('status', isEqualTo: 'accepted')
+                    .where('bloodGroup', isEqualTo: bloodGroup)
+                    .limit(1)
+                    .snapshots(),
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData ||
+                      snapshot.data!.docs.isEmpty) {
+                    return Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFFFF8E1),
+                        borderRadius: BorderRadius.circular(14),
+                        border: Border.all(
+                            color: const Color(0xFFBA7517),
+                            width: 1),
+                      ),
+                      child: Row(
+                        children: const [
+                          SizedBox(
+                            width: 20,
+                            height: 20,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                              color: Color(0xFFBA7517),
+                            ),
+                          ),
+                          SizedBox(width: 12),
+                          Expanded(
+                            child: Text(
+                              'Waiting for a donor to accept your request...',
+                              style: TextStyle(
+                                  fontSize: 13,
+                                  color: Color(0xFFBA7517),
+                                  fontWeight: FontWeight.w600),
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  }
+                  return Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFEAF3DE),
+                      borderRadius: BorderRadius.circular(14),
+                      border: Border.all(
+                          color: const Color(0xFF0F6E56), width: 1),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: const [
+                            Icon(Icons.check_circle,
+                                color: Color(0xFF0F6E56), size: 24),
+                            SizedBox(width: 8),
+                            Text('Request Approved! 🎉',
+                                style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w700,
+                                    color: Color(0xFF0F6E56))),
+                          ],
+                        ),
+                        const SizedBox(height: 8),
+                        const Text(
+                          'A donor has accepted your request and will contact you shortly. Please keep your phone active!',
+                          style: TextStyle(
+                              fontSize: 13,
+                              color: Color(0xFF3B6D11),
+                              height: 1.5),
+                        ),
+                        const SizedBox(height: 12),
+                        Container(
+                          padding: const EdgeInsets.all(12),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Row(
+                            children: const [
+                              Icon(Icons.directions_walk,
+                                  color: Color(0xFF0F6E56), size: 24),
+                              SizedBox(width: 10),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.start,
+                                  children: [
+                                    Text('Donor is on the way!',
+                                        style: TextStyle(
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w700,
+                                            color: Color(0xFF111111))),
+                                    Text(
+                                        'Stay at your location · Keep phone active',
+                                        style: TextStyle(
+                                            fontSize: 12,
+                                            color: Colors.grey)),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              ),
+              const SizedBox(height: 20),
+
+              // NEARBY DONORS COUNT
               StreamBuilder<QuerySnapshot>(
                 stream: FirebaseFirestore.instance
                     .collection('users')
@@ -161,7 +283,8 @@ class RequestSuccessScreen extends StatelessWidget {
                             color: Color(0xFF185FA5), size: 28),
                         const SizedBox(width: 12),
                         Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                          crossAxisAlignment:
+                              CrossAxisAlignment.start,
                           children: [
                             Text('$count Nearby Donors',
                                 style: const TextStyle(
@@ -181,6 +304,8 @@ class RequestSuccessScreen extends StatelessWidget {
                 },
               ),
               const SizedBox(height: 24),
+
+              // BLOOD BANKS
               if (availableBanks.isNotEmpty) ...[
                 Row(
                   children: const [
@@ -250,8 +375,7 @@ class RequestSuccessScreen extends StatelessWidget {
                                             horizontal: 6,
                                             vertical: 2),
                                     decoration: BoxDecoration(
-                                      color:
-                                          const Color(0xFFEAF3DE),
+                                      color: const Color(0xFFEAF3DE),
                                       borderRadius:
                                           BorderRadius.circular(4),
                                     ),
@@ -324,7 +448,8 @@ class RequestSuccessScreen extends StatelessWidget {
                       Get.offAll(() => const DashboardScreen()),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFFA32D2D),
-                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 16),
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(14)),
                   ),
