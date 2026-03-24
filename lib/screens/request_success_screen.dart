@@ -16,8 +16,8 @@ class RequestSuccessScreen extends StatelessWidget {
 
   final List<Map<String, dynamic>> bloodBanks = const [
     {
-      'name': 'GMCH Blood Bank',
-      'address': 'Medical Square, Nagpur',
+      'name': 'Balaji Blood Bank & Component Lab',
+      'address': 'Rajapeth, Amravati',
       'phone': '07122742776',
       'distance': '1.2 km',
       'inventory': {
@@ -26,8 +26,8 @@ class RequestSuccessScreen extends StatelessWidget {
       },
     },
     {
-      'name': 'Red Cross Blood Bank',
-      'address': 'Civil Lines, Nagpur',
+      'name': 'Shri Balaji Blood Bank',
+      'address': 'Railway bridge, Ambapeth, Amravati',
       'phone': '07122533399',
       'distance': '2.8 km',
       'inventory': {
@@ -36,8 +36,8 @@ class RequestSuccessScreen extends StatelessWidget {
       },
     },
     {
-      'name': 'Orange City Blood Bank',
-      'address': 'Khamla, Nagpur',
+      'name': 'Sant Gadgebaba Blood Bank',
+      'address': 'Opposite Srihari Hospital, Badnera Road, Badnera, Amravati',
       'phone': '07122244444',
       'distance': '4.1 km',
       'inventory': {
@@ -46,8 +46,8 @@ class RequestSuccessScreen extends StatelessWidget {
       },
     },
     {
-      'name': 'Alexis Blood Bank',
-      'address': 'Sitaburdi, Nagpur',
+      'name': 'Pdmc Blood Bank',
+      'address': 'Panchavati, Amravati',
       'phone': '07122228888',
       'distance': '3.4 km',
       'inventory': {

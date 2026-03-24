@@ -202,7 +202,7 @@ class _AmbulanceScreenState extends State<AmbulanceScreen> {
                                 letterSpacing: 1,
                                 color: Colors.grey)),
                         SizedBox(height: 2),
-                        Text('Nagpur Central',
+                        Text('Amravati Central',
                             style: TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w700,

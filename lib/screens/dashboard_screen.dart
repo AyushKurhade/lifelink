@@ -601,22 +601,24 @@ class _DashboardScreenState extends State<DashboardScreen> {
         ),
         padding: const EdgeInsets.all(16),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-              Container(
-              width: 44,
-              height: 44,
+            Container(
+              width: 60,
+              height: 60,
               decoration: BoxDecoration(
                 color: iconBg,
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(16),
               ),
-              child: Icon(icon, color: iconColor, size: 24),
+              child: Icon(icon, color: iconColor, size: 32),
             ),
+            const SizedBox(height: 12),
             Text(label,
+                textAlign: TextAlign.center,
                 style: const TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
+                    fontSize: 13,
+                    fontWeight: FontWeight.w600,
                     color: Color(0xFF222222))),
           ],
         ),

@@ -111,8 +111,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         'available': selectedRole == 'Donor' || selectedRole == 'Both',
         'lastDonated': '2025-01-01',
         'fcmToken': token ?? '',
-        'location': const GeoPoint(21.1458, 79.0882),
-      });
+'location': const GeoPoint(20.9320, 77.7523),      });
       Get.offAll(() => const DashboardScreen());
     } catch (e) {
       setState(() => isLoading = false);

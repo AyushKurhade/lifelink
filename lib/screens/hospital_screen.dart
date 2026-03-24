@@ -8,35 +8,35 @@ import 'feed_screen.dart';
 class HospitalScreen extends StatelessWidget {
   const HospitalScreen({super.key});
 
-  final List<Map<String, String>> hospitals = const [
+final List<Map<String, String>> hospitals = const [
     {
-      'name': 'GMCH Nagpur',
+      'name': 'GMC Amravati',
       'specialty': 'Trauma & General',
-      'distance': '1.2 km',
+      'distance': '1.1 km',
       'type': 'Government',
     },
     {
-      'name': 'Alexis Hospital',
+      'name': 'Daga Hospital',
       'specialty': 'Multi-specialty',
-      'distance': '3.4 km',
+      'distance': '2.3 km',
       'type': 'Private',
     },
     {
-      'name': 'Wockhardt Hospital',
+      'name': 'Kasliwal Hospital',
       'specialty': 'Emergency Care',
-      'distance': '4.1 km',
+      'distance': '3.1 km',
       'type': 'Private',
     },
     {
-      'name': 'Orange City Hospital',
+      'name': 'Vaibhav Hospital',
       'specialty': 'General & Blood Bank',
-      'distance': '5.8 km',
+      'distance': '3.8 km',
       'type': 'Private',
     },
     {
-      'name': 'KIMS Hospital',
+      'name': 'Shri Hospital',
       'specialty': 'Multi-specialty',
-      'distance': '7.2 km',
+      'distance': '5.2 km',
       'type': 'Private',
     },
   ];
@@ -116,7 +116,7 @@ class HospitalScreen extends StatelessWidget {
                               color: Color(0xFF0F6E56), size: 20),
                           SizedBox(width: 8),
                           Text(
-                              'Scanning 10km radius from Nagpur, India',
+                              'Scanning 10km radius from Amravati, India',
                               style: TextStyle(
                                   fontSize: 13,
                                   color: Color(0xFF555555))),

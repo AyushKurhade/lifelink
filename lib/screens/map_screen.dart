@@ -19,17 +19,17 @@ class _MapScreenState extends State<MapScreen> {
   List<Marker> ambulanceMarkers = [];
 
   final List<Map<String, dynamic>> hospitals = [
-    {'name': 'GMCH Nagpur', 'lat': 21.1508, 'lng': 79.0830},
-    {'name': 'Alexis Hospital', 'lat': 21.1200, 'lng': 79.0800},
-    {'name': 'Wockhardt', 'lat': 21.1450, 'lng': 79.0910},
-    {'name': 'Orange City', 'lat': 21.1380, 'lng': 79.0750},
-    {'name': 'KIMS Hospital', 'lat': 21.1300, 'lng': 79.0850},
+    {'name': 'GMC Amravati', 'lat': 20.9374, 'lng': 77.7796},
+    {'name': 'Daga Hospital', 'lat': 20.9320, 'lng': 77.7600},
+    {'name': 'Kasliwal Hospital', 'lat': 20.9280, 'lng': 77.7650},
+    {'name': 'Vaibhav Hospital', 'lat': 20.9350, 'lng': 77.7700},
+    {'name': 'Shri Hospital', 'lat': 20.9400, 'lng': 77.7550},
   ];
 
-  final List<Map<String, dynamic>> ambulances = [
-    {'name': 'AMB-01', 'lat': 21.1420, 'lng': 79.0860},
-    {'name': 'AMB-02', 'lat': 21.1350, 'lng': 79.0780},
-    {'name': 'AMB-03', 'lat': 21.1480, 'lng': 79.0920},
+ final List<Map<String, dynamic>> ambulances = [
+    {'name': 'AMB-01', 'lat': 20.9340, 'lng': 77.7560},
+    {'name': 'AMB-02', 'lat': 20.9290, 'lng': 77.7480},
+    {'name': 'AMB-03', 'lat': 20.9410, 'lng': 77.7620},
   ];
 
   List<Map<String, dynamic>> activeRequests = [];
@@ -195,8 +195,8 @@ class _MapScreenState extends State<MapScreen> {
                 FlutterMap(
                   mapController: mapController,
                   options: const MapOptions(
-                    initialCenter: LatLng(21.1458, 79.0882),
-                    initialZoom: 13,
+initialCenter: LatLng(20.9320, 77.7523),
+                      initialZoom: 13,
                   ),
                   children: [
                     TileLayer(
