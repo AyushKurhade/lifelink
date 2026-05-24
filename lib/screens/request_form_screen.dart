@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'request_success_screen.dart';
 
 class RequestFormScreen extends StatefulWidget {
@@ -49,7 +50,9 @@ class _RequestFormScreenState extends State<RequestFormScreen> {
     }
     setState(() => isLoading = true);
     try {
-      await FirebaseFirestore.instance.collection('requests').add({
+      final docRef = await FirebaseFirestore.instance
+          .collection('requests')
+          .add({
         'bloodGroup': selectedBloodGroup,
         'urgency': selectedUrgency,
         'status': 'pending',
@@ -57,11 +60,13 @@ class _RequestFormScreenState extends State<RequestFormScreen> {
             currentPosition!.latitude, currentPosition!.longitude),
         'createdAt': FieldValue.serverTimestamp(),
         'acceptedBy': null,
+        'createdBy': FirebaseAuth.instance.currentUser?.uid,
       });
       setState(() => isLoading = false);
       Get.offAll(() => RequestSuccessScreen(
             bloodGroup: selectedBloodGroup,
             urgency: selectedUrgency,
+            requestId: docRef.id,
           ));
     } catch (e) {
       setState(() => isLoading = false);
@@ -248,7 +253,8 @@ class _RequestFormScreenState extends State<RequestFormScreen> {
                         const SizedBox(width: 10),
                         Expanded(
                           child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                            crossAxisAlignment:
+                                CrossAxisAlignment.start,
                             children: [
                               const Text('Amravati, Maharashtra',
                                   style: TextStyle(
@@ -303,7 +309,8 @@ class _RequestFormScreenState extends State<RequestFormScreen> {
                       borderRadius: BorderRadius.circular(14)),
                 ),
                 child: isLoading
-                    ? const CircularProgressIndicator(color: Colors.white)
+                    ? const CircularProgressIndicator(
+                        color: Colors.white)
                     : const Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [

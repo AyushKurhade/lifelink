@@ -7,11 +7,13 @@ import 'dashboard_screen.dart';
 class RequestSuccessScreen extends StatelessWidget {
   final String bloodGroup;
   final String urgency;
+  final String requestId;
 
   const RequestSuccessScreen({
     super.key,
     required this.bloodGroup,
     required this.urgency,
+    required this.requestId,
   });
 
   final List<Map<String, dynamic>> bloodBanks = const [
@@ -144,17 +146,19 @@ class RequestSuccessScreen extends StatelessWidget {
               ),
               const SizedBox(height: 20),
 
-              // ✅ DONOR ACCEPTED POPUP CARD
-              StreamBuilder<QuerySnapshot>(
+              // ✅ REAL-TIME STATUS — checks YOUR specific request only
+              StreamBuilder<DocumentSnapshot>(
                 stream: FirebaseFirestore.instance
                     .collection('requests')
-                    .where('status', isEqualTo: 'accepted')
-                    .where('bloodGroup', isEqualTo: bloodGroup)
-                    .limit(1)
+                    .doc(requestId)
                     .snapshots(),
                 builder: (context, snapshot) {
-                  if (!snapshot.hasData ||
-                      snapshot.data!.docs.isEmpty) {
+                  if (!snapshot.hasData) return const SizedBox();
+                  final data = snapshot.data!.data()
+                      as Map<String, dynamic>?;
+                  if (data == null) return const SizedBox();
+                  final status = data['status'] ?? 'pending';
+                  if (status != 'accepted') {
                     return Container(
                       width: double.infinity,
                       padding: const EdgeInsets.all(16),
@@ -375,7 +379,8 @@ class RequestSuccessScreen extends StatelessWidget {
                                             horizontal: 6,
                                             vertical: 2),
                                     decoration: BoxDecoration(
-                                      color: const Color(0xFFEAF3DE),
+                                      color:
+                                          const Color(0xFFEAF3DE),
                                       borderRadius:
                                           BorderRadius.circular(4),
                                     ),
