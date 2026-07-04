@@ -62,6 +62,20 @@ Every 2 seconds, someone in India needs blood. Every day, thousands of patients 
 - Secure user profiles
 
 ---
+---
+
+## 🖥️ Screenshots
+
+### Splash Screen
+![Screen 01](assets/Splash_Sreen.jpeg)
+
+### 
+![Screen 03](assets/Screen2.png)
+
+### Screen 03
+![Screen 03](assets/Screen3.png)
+
+---
 
 ## 🛠️ Tech Stack
 
